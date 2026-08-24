@@ -37,12 +37,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DepthOutlineThickness: 2.6
+    - _DepthOutlineThickness: 1.91
     - _DepthSensitivity: 1
     - _DepthSoftness: 0.4
     - _DepthThreshold: 0.3
-    - _DepthThresholdMax: 3
-    - _DepthThresholdMin: 0.1
+    - _DepthThresholdMax: 0.2
+    - _DepthThresholdMin: 0
     - _MaxNormalizedDepth: 50
     - _MinThicknessScale: 0
     - _NormalOutlineThickness: 0
@@ -52,6 +52,6 @@ Material:
     - _ThicknessFalloffDistance: 50
     - _UseMultiply: 1
     m_Colors:
-    - _OutlineColor: {r: 0.2830189, g: 0.18312314, b: 0.1535244, a: 1}
+    - _OutlineColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

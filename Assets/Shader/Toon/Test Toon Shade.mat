@@ -84,12 +84,13 @@ Material:
     m_Floats:
     - _Alpha: 0
     - _AttenuationStrength: 0.5
+    - _Blend: 0
     - _Metalic: 0
     - _NormalStrength: 0
     - _OutlineStrength: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RampOffset: 0.7
+    - _RampOffset: 0.47
     - _RimStrength: 1.11
     - _RimThreshold: 0
     - _Smoothness: 0.645
