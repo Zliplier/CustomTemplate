@@ -110,7 +110,7 @@ Material:
     - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AttenuationStrength: 0.591
+    - _AttenuationStrength: 0.5
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -134,7 +134,7 @@ Material:
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RampOffset: 0.14
+    - _RampOffset: 0.52
     - _ReceiveShadows: 1
     - _RimStrength: 1.42
     - _Smoothness: 0
@@ -155,7 +155,7 @@ Material:
     - _InlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0.7924528, g: 0.736383, b: 0.736383, a: 1}
+    - _ShadowColor: {r: 0.6037736, g: 0.49270204, b: 0.49270204, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
