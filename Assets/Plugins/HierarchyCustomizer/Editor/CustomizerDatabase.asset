@@ -45,13 +45,61 @@ MonoBehaviour:
     isCustomIcon: 0
   - key: 4cc8b2d7b86692549843a39909f65cdc
     hasColor: 1
-    color: {r: 0.55, g: 0.35, b: 0.8, a: 1}
+    color: {r: 0.85, g: 0.3, b: 0.6, a: 1}
     hasIcon: 1
-    iconName: Light Icon
+    iconName: Tilemap Icon
     isCustomIcon: 0
   - key: 2f32e07e0c2f11a4185efe6b5ca44697
     hasColor: 1
-    color: {r: 0.35, g: 0.7, b: 0.3, a: 1}
+    color: {r: 0.57783335, g: 1, b: 0.255, a: 1}
     hasIcon: 1
     iconName: Terrain Icon
+    isCustomIcon: 0
+  - key: 13ae759da9ea9834b9389ba61a594f75
+    hasColor: 1
+    color: {r: 0.25, g: 0.45, b: 0.85, a: 1}
+    hasIcon: 1
+    iconName: Tilemap Icon
+    isCustomIcon: 0
+  - key: 7e26b4af65d5f2c4c9c9495a9667ba26
+    hasColor: 1
+    color: {r: 0.12800002, g: 0.9128001, b: 1, a: 1}
+    hasIcon: 1
+    iconName: Skybox Icon
+    isCustomIcon: 0
+  - key: a2dc8b6616362e64fafa87b3e7a5845e
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: AudioSource Icon
+    isCustomIcon: 0
+  - key: 71860ae94f042444bad9763f710c6d77
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 0
+    iconName: 
+    isCustomIcon: 0
+  - key: 709f11a7f3c4041caa4ef136ea32d874
+    hasColor: 1
+    color: {r: 0.35, g: 0.7, b: 0.3, a: 0.7}
+    hasIcon: 1
+    iconName: Light Icon
+    isCustomIcon: 0
+  - key: a9d4a08697a4da84583b587575444598
+    hasColor: 1
+    color: {r: 1, g: 0.9324324, b: 0, a: 0.7}
+    hasIcon: 1
+    iconName: Folder Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-410087039-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 0
+    iconName: Light Icon
+    isCustomIcon: 0
+  - key: 07f90487e0f158a499440806843385de
+    hasColor: 1
+    color: {r: 0.6862744, g: 0.43627453, b: 1, a: 1}
+    hasIcon: 1
+    iconName: Light Icon
     isCustomIcon: 0
