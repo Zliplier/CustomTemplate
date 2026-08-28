@@ -70,7 +70,7 @@ MonoBehaviour:
   - key: a2dc8b6616362e64fafa87b3e7a5845e
     hasColor: 0
     color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
-    hasIcon: 1
+    hasIcon: 0
     iconName: AudioSource Icon
     isCustomIcon: 0
   - key: 71860ae94f042444bad9763f710c6d77
@@ -102,4 +102,28 @@ MonoBehaviour:
     color: {r: 0.6862744, g: 0.43627453, b: 1, a: 1}
     hasIcon: 1
     iconName: Light Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1654566022-0
+    hasColor: 0
+    color: {r: 0.8, g: 0.24, b: 0.24, a: 1}
+    hasIcon: 1
+    iconName: AudioSource Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-2050752148-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: AudioSource Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1344441793-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: AudioSource Icon
+    isCustomIcon: 0
+  - key: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-295468064-0
+    hasColor: 0
+    color: {r: 0.35, g: 0.55, b: 0.85, a: 0.35}
+    hasIcon: 1
+    iconName: AudioSource Icon
     isCustomIcon: 0

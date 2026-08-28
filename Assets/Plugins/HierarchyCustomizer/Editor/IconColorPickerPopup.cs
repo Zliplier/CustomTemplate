@@ -11,18 +11,16 @@ namespace HierarchyCustomizer
     /// </summary>
     public class IconColorPickerPopup : PopupWindowContent
     {
-        private const float DefaultAlpha = 0.7f;
-        
         private static readonly Color[] PresetColors =
         {
-            new Color(0.80f, 0.24f, 0.24f, DefaultAlpha), // red
-            new Color(0.85f, 0.55f, 0.18f, DefaultAlpha), // orange
-            new Color(0.78f, 0.74f, 0.20f, DefaultAlpha), // olive / yellow
-            new Color(0.35f, 0.70f, 0.30f, DefaultAlpha), // green
-            new Color(0.20f, 0.65f, 0.60f, DefaultAlpha), // teal
-            new Color(0.25f, 0.45f, 0.85f, DefaultAlpha), // blue
-            new Color(0.55f, 0.35f, 0.80f, DefaultAlpha), // purple
-            new Color(0.85f, 0.30f, 0.60f, DefaultAlpha), // pink
+            new Color(0.80f, 0.24f, 0.24f), // red
+            new Color(0.85f, 0.55f, 0.18f), // orange
+            new Color(0.78f, 0.74f, 0.20f), // olive / yellow
+            new Color(0.35f, 0.70f, 0.30f), // green
+            new Color(0.20f, 0.65f, 0.60f), // teal
+            new Color(0.25f, 0.45f, 0.85f), // blue
+            new Color(0.55f, 0.35f, 0.80f), // purple
+            new Color(0.85f, 0.30f, 0.60f), // pink
         };
 
         private const int Columns = 6;

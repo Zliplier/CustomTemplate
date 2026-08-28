@@ -5,7 +5,7 @@ using Zlipacket.Core.Tools.Utilities;
 
 namespace Zlipacket.Core.Audio
 {
-    public class AudioManager : PersistantSingleton<AudioManager>
+    public class AudioManager : Singleton<AudioManager>
     {
         public const float DEFAULT_VOLUME = 0.7f;
         
