@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // See https://github.com/adammyhre/Unity-Utils for more extension methods
@@ -17,5 +18,30 @@ namespace Zlipacket.Core.Tools.Extension
         /// <param name="obj">The object being checked.</param>
         /// <returns>The object itself if it exists and not destroyed, null otherwise.</returns>
         public static T OrNull<T>(this T obj) where T : Object => obj ? obj : null;
+        
+        public static List<GameObject> AllChilds(this GameObject root)
+        {
+            List<GameObject> result = new List<GameObject>();
+            if (root.transform.childCount > 0)
+            {
+                foreach (Transform VARIABLE in root.transform)
+                {
+                    Searcher(result, VARIABLE.gameObject);
+                }
+            }
+            return result;
+        }
+
+        public static void Searcher(List<GameObject> list, GameObject root)
+        {
+            list.Add(root);
+            if (root.transform.childCount > 0)
+            {
+                foreach (Transform VARIABLE in root.transform)
+                {
+                    Searcher(list, VARIABLE.gameObject);
+                }
+            }
+        }
     }
 }

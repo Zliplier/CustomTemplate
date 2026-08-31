@@ -80,31 +80,6 @@ namespace Zlipacket.Core.Tools.Utilities
             return result.normalized;
         }
         
-        public static List<GameObject> AllChilds(GameObject root)
-        {
-            List<GameObject> result = new List<GameObject>();
-            if (root.transform.childCount > 0)
-            {
-                foreach (Transform VARIABLE in root.transform)
-                {
-                    Searcher(result,VARIABLE.gameObject);
-                }
-            }
-            return result;
-        }
-
-        public static void Searcher(List<GameObject> list,GameObject root)
-        {
-            list.Add(root);
-            if (root.transform.childCount > 0)
-            {
-                foreach (Transform VARIABLE in root.transform)
-                {
-                    Searcher(list,VARIABLE.gameObject);
-                }
-            }
-        }
-        
         // Matches <mark=#RRGGBB> or <mark=#RRGGBBAA>, with optional spaces around '='
         private static readonly Regex markPattern = 
             new Regex(@"<mark\s*=\s*#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})>", RegexOptions.Compiled);

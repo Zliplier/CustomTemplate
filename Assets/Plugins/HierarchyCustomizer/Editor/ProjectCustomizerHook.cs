@@ -34,12 +34,15 @@ namespace HierarchyCustomizer
 
         private static void OnGUI(string guid, Rect selectionRect)
         {
+            var db = CustomizerDatabase.Instance;
+            if (db == null) return; // nothing created yet - tool is inactive until you create one
+
             if (!IsFolder(guid))
                 return;
 
             bool hovering = selectionRect.Contains(Event.current.mousePosition);
 
-            var entry = CustomizerDatabase.Instance.Get(guid);
+            var entry = db.Get(guid);
             bool hasColor = entry != null && entry.hasColor;
             bool hasIcon = entry != null && entry.hasIcon;
 

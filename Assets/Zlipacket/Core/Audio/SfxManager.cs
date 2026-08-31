@@ -1,9 +1,43 @@
-﻿using Zlipacket.Core.Tools.Utilities;
+﻿using UnityEngine;
+using UnityEngine.Audio;
+using Zlipacket.Core.Tools.Extension;
+using Zlipacket.Core.Tools.Utilities;
 
 namespace Zlipacket.Core.Audio
 {
     public class SfxManager : Singleton<SfxManager>
     {
+        public AudioMixerGroup MixerGroup => AudioManager.Instance.GetMixerGroup(MixerType.Sfx);
+
+        public AudioSource PlaySfx(AudioClip clip, float volume = 1.0f, bool loop = false)
+        {
+            return PlaySfxAtLocation(clip, transform.position, volume, loop);
+        }
         
+        public AudioSource PlaySfxAtLocation(AudioClip clip, Vector3 location, float volume = 1.0f, bool loop = false)
+        {
+            GameObject newObject = new GameObject($"Sfx - {clip.name}");
+            newObject.transform.SetParent(transform);
+            newObject.transform.position = location;
+            AudioSource newSfx = newObject.AddComponent<AudioSource>();
+            newSfx.playOnAwake = false;
+            newSfx.clip = clip;
+            newSfx.volume = volume;
+            newSfx.loop = loop;
+            newSfx.Play();
+            
+            if (!loop)
+                Destroy(newSfx, clip.length);
+            
+            return newSfx;
+        }
+
+        public void StopAllSfx()
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
     }
 }

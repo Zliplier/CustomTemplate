@@ -27,37 +27,120 @@ namespace HierarchyCustomizer
 
     /// <summary>
     /// Persistent ScriptableObject asset that stores every customization made
-    /// in the Hierarchy and Project windows. The asset is created
-    /// automatically in the same folder as this script, wherever you've
-    /// placed the HierarchyCustomizer package in your project, so it travels
-    /// with the tool instead of scattering a separate "Editor" folder at
-    /// your Assets root.
+    /// in the Hierarchy and Project windows.
+    ///
+    /// This is intentionally NOT auto-created. Create it once via
+    /// Tools > Hierarchy Customizer > Create Database Asset, then commit the
+    /// resulting .asset (and its .meta) to source control. Auto-creating it
+    /// on first use meant every machine that opened the project before
+    /// pulling the committed asset would generate its own copy with a
+    /// different GUID, which produced conflicts and broken references on
+    /// clone/merge - exactly what this is meant to avoid.
+    ///
+    /// The asset is located by type anywhere in the project (not by a fixed
+    /// path), so it's found correctly regardless of where you put it or
+    /// where a git clone puts it.
     /// </summary>
     public class CustomizerDatabase : ScriptableObject
     {
         private const string AssetFileName = "CustomizerDatabase.asset";
+        private const string NoDatabaseWarnedKey = "HierarchyCustomizer_NoDatabaseWarned";
 
         [SerializeField] private List<CustomizerEntry> entries = new List<CustomizerEntry>();
 
         private Dictionary<string, CustomizerEntry> lookup;
         private static CustomizerDatabase instance;
+        private static bool searchedForInstance;
         private static string cachedFolder;
 
+        /// <summary>
+        /// The active database, or null if none has been created yet. Never
+        /// creates one as a side effect of being read.
+        /// </summary>
         public static CustomizerDatabase Instance
         {
             get
             {
-                if (instance == null)
-                    instance = LoadOrCreate();
+                if (instance != null) return instance;
+                if (searchedForInstance) return null;
+
+                instance = FindExisting();
+                searchedForInstance = true;
+
+                if (instance == null && !SessionState.GetBool(NoDatabaseWarnedKey, false))
+                {
+                    SessionState.SetBool(NoDatabaseWarnedKey, true);
+                    Debug.Log("[HierarchyCustomizer] No database asset found - color/icon customization " +
+                              "is inactive until you create one. Use Tools > Hierarchy Customizer > " +
+                              "Create Database Asset, then commit the resulting asset to source control.");
+                }
+
                 return instance;
             }
         }
 
         public IReadOnlyList<CustomizerEntry> Entries => entries;
 
+        private static CustomizerDatabase FindExisting()
+        {
+            var guids = AssetDatabase.FindAssets("t:" + nameof(CustomizerDatabase));
+            if (guids.Length == 0)
+                return null;
+
+            if (guids.Length > 1)
+            {
+                Debug.LogWarning($"[HierarchyCustomizer] Found {guids.Length} CustomizerDatabase assets in " +
+                                  "the project - using the first one. Search the Project window for " +
+                                  "\"t:CustomizerDatabase\" to find and delete the extras.");
+            }
+
+            var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            return AssetDatabase.LoadAssetAtPath<CustomizerDatabase>(path);
+        }
+
         /// <summary>
-        /// Resolves the folder this script itself lives in. CallerFilePath
-        /// is filled in by the compiler with the path of the file that calls
+        /// Explicitly creates the database asset next to this script, if one
+        /// doesn't already exist anywhere in the project. Intended to be
+        /// called only from the "Create Database Asset" menu item - not from
+        /// any automatic/lazy code path.
+        /// </summary>
+        public static CustomizerDatabase CreateDatabaseAsset()
+        {
+            var existing = FindExisting();
+            if (existing != null)
+            {
+                instance = existing;
+                searchedForInstance = true;
+                Selection.activeObject = existing;
+                EditorGUIUtility.PingObject(existing);
+                Debug.Log($"[HierarchyCustomizer] A database asset already exists at " +
+                          $"{AssetDatabase.GetAssetPath(existing)} - selecting it instead of creating a new one.");
+                return existing;
+            }
+
+            var path = $"{PluginFolder()}/{AssetFileName}";
+            var dir = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            var db = CreateInstance<CustomizerDatabase>();
+            AssetDatabase.CreateAsset(db, path);
+            AssetDatabase.SaveAssets();
+
+            instance = db;
+            searchedForInstance = true;
+
+            Selection.activeObject = db;
+            EditorGUIUtility.PingObject(db);
+            Debug.Log($"[HierarchyCustomizer] Created database asset at {path}. " +
+                      "Commit this file (and its .meta) to source control.");
+            return db;
+        }
+
+        /// <summary>
+        /// Resolves the folder this script itself lives in, used only as the
+        /// default location for CreateDatabaseAsset(). CallerFilePath is
+        /// filled in by the compiler with the path of the file that calls
         /// this method - since every call site is inside this same file,
         /// that's always CustomizerDatabase.cs's own location.
         /// </summary>
@@ -78,25 +161,6 @@ namespace HierarchyCustomizer
                 cachedFolder = "Assets";
 
             return cachedFolder;
-        }
-
-        private static string AssetPath => $"{PluginFolder()}/{AssetFileName}";
-
-        private static CustomizerDatabase LoadOrCreate()
-        {
-            var path = AssetPath;
-            var db = AssetDatabase.LoadAssetAtPath<CustomizerDatabase>(path);
-            if (db != null)
-                return db;
-
-            var dir = Path.GetDirectoryName(path);
-            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            db = CreateInstance<CustomizerDatabase>();
-            AssetDatabase.CreateAsset(db, path);
-            AssetDatabase.SaveAssets();
-            return db;
         }
 
         private void BuildLookup()

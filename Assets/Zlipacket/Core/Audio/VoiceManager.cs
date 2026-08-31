@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using Zlipacket.Core.Tools.Extension;
 using Zlipacket.Core.Tools.Utilities;
 
@@ -6,6 +7,8 @@ namespace Zlipacket.Core.Audio
 {
     public class VoiceManager : Singleton<VoiceManager>
     {
+        public AudioMixerGroup MixerGroup => AudioManager.Instance.GetMixerGroup(MixerType.Voice);
+        
         [SerializeField] private AudioSource audioSource;
         
         public bool IsPlaying => audioSource.isPlaying;
@@ -14,7 +17,10 @@ namespace Zlipacket.Core.Audio
         {
             base.Awake();
             if (audioSource == null)
+            {
                 audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.outputAudioMixerGroup = MixerGroup;
+            }
         }
         
         public AudioSource PlayVoiceLine(AudioClip clip, bool voiceCut = true)

@@ -34,13 +34,16 @@ namespace HierarchyCustomizer
 
         private static void OnGUI(int instanceID, Rect selectionRect)
         {
+            var db = CustomizerDatabase.Instance;
+            if (db == null) return; // nothing created yet - tool is inactive until you create one
+
             var go = ResolveGameObject(instanceID);
             if (go == null) return;
 
             bool hovering = selectionRect.Contains(Event.current.mousePosition);
 
             string key = GetCachedGlobalId(instanceID, go);
-            var entry = CustomizerDatabase.Instance.Get(key);
+            var entry = db.Get(key);
             bool hasColor = entry != null && entry.hasColor;
             bool hasIcon = entry != null && entry.hasIcon;
 
@@ -73,7 +76,7 @@ namespace HierarchyCustomizer
                     // through each other's transparent padding.
                     if (!hasColor)
                     {
-                        EditorGUI.DrawRect(iconRect, GetRowBackgroundColor(instanceID));
+                        EditorGUI.DrawRect(iconRect, GetRowBackgroundColor(go));
                     }
 
                     GUI.DrawTexture(iconRect, tex, ScaleMode.ScaleToFit);
@@ -135,14 +138,31 @@ namespace HierarchyCustomizer
         // the default icon underneath ours. Not pixel-perfect for every skin
         // state (e.g. an unfocused-window selection uses a slightly
         // different gray), but close enough that no ghosting shows through.
-        private static Color GetRowBackgroundColor(int instanceID)
+        private static Color GetRowBackgroundColor(GameObject go)
         {
-            if (Selection.Contains(instanceID))
+            if (IsSelected(go))
                 return new Color(0.24f, 0.48f, 0.90f);
 
             return EditorGUIUtility.isProSkin
                 ? new Color(0.219f, 0.219f, 0.219f)
                 : new Color(0.784f, 0.784f, 0.784f);
+        }
+
+        // Deliberately checks the actual GameObject reference via
+        // Selection.gameObjects rather than an instance/entity ID. Unity is
+        // mid-migration from int instance IDs to a new EntityId type across
+        // the Editor API (Selection.Contains(int) included), and the exact
+        // replacement APIs have been shifting between Unity 6.x point
+        // releases. Since we already have the object reference here, this
+        // sidesteps that churn entirely instead of chasing it.
+        private static bool IsSelected(GameObject go)
+        {
+            var selected = Selection.gameObjects;
+            for (int i = 0; i < selected.Length; i++)
+            {
+                if (selected[i] == go) return true;
+            }
+            return false;
         }
     }
 }

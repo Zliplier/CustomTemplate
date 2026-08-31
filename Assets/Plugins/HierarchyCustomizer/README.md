@@ -10,7 +10,26 @@ big scenes and projects organized.
    (e.g. `Assets/HierarchyCustomizer`). It contains its own `Editor` folder
    with an editor-only assembly definition, so it will never end up in your
    builds.
-2. Let Unity recompile. No further setup needed — it activates automatically.
+2. Let Unity recompile.
+3. Run **Tools > Hierarchy Customizer > Create Database Asset** once. This
+   creates the data asset that stores every color/icon you assign. It's
+   created next to the plugin's scripts by default.
+4. Commit the resulting `CustomizerDatabase.asset` (and its `.meta` file) to
+   source control, the same as any other project asset.
+
+The database is **never created automatically** — only step 3 creates it.
+Until you run it, the tool stays fully inactive (no hover buttons, no
+drawing) and just logs a one-time reminder in the Console. This is
+deliberate: auto-creating it on first use meant every teammate's machine (or
+a fresh clone) could generate its own copy with a different GUID before
+anyone had pulled the committed one, which produces merge conflicts and
+broken references. With an explicit, one-time creation step, everyone ends
+up sharing the exact same asset.
+
+If a database asset already exists anywhere in the project, the tool finds
+it automatically by type — it doesn't matter where you put it or where it
+ends up after a clone, so feel free to move it if you'd rather keep it
+somewhere else.
 
 ## Usage
 
@@ -29,12 +48,12 @@ big scenes and projects organized.
   and a custom icon is drawn as a small badge in the bottom-right corner
   rather than replacing the whole icon.
 - **Tools > Hierarchy Customizer**:
-  - `Select Database Asset` — jumps to the data asset holding every
-    assignment. It's created automatically in the same folder as
-    `CustomizerDatabase.cs` — wherever you've placed the HierarchyCustomizer
-    package in your project (e.g. `Assets/Plugins/HierarchyCustomizer/Editor/`)
-    — so it travels with the tool instead of living at a fixed path. Commit
-    this file to source control if you want your team to share the same
+  - `Create Database Asset` — the one-time setup step described above. If a
+    database already exists anywhere in the project, this just selects it
+    instead of making a duplicate.
+  - `Select Database Asset` — jumps to the current data asset in the
+    Project window (offers to create one if none exists yet). Commit this
+    file to source control if you want your team to share the same
     colors/icons.
   - `Clear All Customizations` — wipes every assignment (with a confirmation).
 
@@ -87,14 +106,24 @@ big scenes and projects organized.
 - `EditorUtility.InstanceIDToObject` is version-guarded to use
   `EditorUtility.EntityIdToObject` on Unity 6+ where the former is obsolete,
   so you shouldn't see that compiler warning anymore.
+- Unity is mid-migration from `int` instance IDs to a new `EntityId` type
+  across much of the Editor API, and the exact replacement methods have
+  been shifting between Unity 6.x point releases. Where we already have the
+  actual object reference on hand (e.g. checking whether a GameObject is
+  selected), we compare against `Selection.gameObjects` directly instead of
+  going through any ID at all - that sidesteps the churn entirely rather
+  than chasing each point release's exact API shape. If you hit a similar
+  "X is obsolete, use Y instead" warning from a different Unity API this
+  tool touches, the same approach (use the object reference you already
+  have instead of an ID) is usually the most durable fix.
 
 ## Known limitations
 
-- If you'd already used an earlier version of this tool, your old data
-  asset was created at `Assets/Editor/HierarchyCustomizer/CustomizerDatabase.asset`.
-  To keep those assignments, just drag that file into the same folder as
-  `CustomizerDatabase.cs` in the new package location — it'll be picked up
-  automatically since it's found by filename and folder, not by GUID.
+- If you'd used an earlier version of this tool, your old data asset may
+  still be sitting at `Assets/Editor/HierarchyCustomizer/CustomizerDatabase.asset`.
+  You don't need to move it — the tool finds any `CustomizerDatabase` asset
+  in the project by type, regardless of location — so it'll just be picked
+  up as-is.
 
 - Very deeply nested/indented objects, and unusual Project window layouts,
   may need the offset constants above tweaked slightly — exact pixel

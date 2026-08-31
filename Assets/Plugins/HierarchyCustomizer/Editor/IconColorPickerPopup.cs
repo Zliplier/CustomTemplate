@@ -52,7 +52,16 @@ namespace HierarchyCustomizer
 
         public override void OnGUI(Rect rect)
         {
-            var entry = CustomizerDatabase.Instance.GetOrCreate(key);
+            var db = CustomizerDatabase.Instance;
+            if (db == null)
+            {
+                EditorGUILayout.HelpBox(
+                    "Database asset not found. Create one via Tools > Hierarchy Customizer > Create Database Asset.",
+                    MessageType.Warning);
+                return;
+            }
+
+            var entry = db.GetOrCreate(key);
 
             GUILayout.Space(Padding);
             DrawColorRow(entry);
@@ -200,7 +209,9 @@ namespace HierarchyCustomizer
 
         private void Commit()
         {
-            CustomizerDatabase.Instance.Save();
+            var db = CustomizerDatabase.Instance;
+            if (db == null) return;
+            db.Save();
             onChanged?.Invoke();
         }
     }
